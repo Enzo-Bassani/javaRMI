@@ -5,6 +5,7 @@ public class Room extends UnicastRemoteObject implements RoomInterface {
 	private Chair[][] chairs;
 	private static int ROWS = 20;
 	private static int COLUMNS = 20;
+	private static String invalidArgMsg = "Cadeira %d-%d não existe. Formato da sala: " + ROWS + "x" + COLUMNS;
 
 	public Room() throws RemoteException {
 		chairs = new Chair[ROWS][COLUMNS];
@@ -16,15 +17,24 @@ public class Room extends UnicastRemoteObject implements RoomInterface {
 	}
 
 	@Override
-	public boolean isAvailable(int row, int column) throws RemoteException {
+	public boolean isAvailable(int row, int column) throws RemoteException, Exception {
+		if (!validInput(row, column)) {
+			throw new Exception(String.format(invalidArgMsg, row, column));
+		}
 		return chairs[row][column].isAvailable();
 	}
 
-	public void reserve(int row, int column) throws RemoteException {
+	public void reserve(int row, int column) throws RemoteException, Exception {
+		if (!validInput(row, column)) {
+			throw new Exception(String.format(invalidArgMsg, row, column));
+		}
 		chairs[row][column].reserve();
 	}
 
-	public void free(int row, int column) throws RemoteException {
+	public void free(int row, int column) throws RemoteException, Exception {
+		if (!validInput(row, column)) {
+			throw new Exception(String.format(invalidArgMsg, row, column));
+		}
 		chairs[row][column].free();
 	}
 
@@ -38,6 +48,10 @@ public class Room extends UnicastRemoteObject implements RoomInterface {
 			}
 		}
 		return chairsMap;
+	}
+
+	private static boolean validInput(int row, int column) {
+		return row < ROWS && column < COLUMNS;
 	}
 
 }
