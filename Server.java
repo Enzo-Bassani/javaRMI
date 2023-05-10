@@ -1,10 +1,5 @@
 import java.lang.SecurityManager;
 import java.rmi.Naming;
-// import java.rmi.RemoteException;
-
-//Executar:
-// rmiregistry &
-// java -Djava.security.policy=server.policy Server
 
 public class Server {
 	
@@ -12,9 +7,7 @@ public class Server {
 		if(System.getSecurityManager() == null) {
 		     System.setSecurityManager(new SecurityManager());
 		}
-		try {  
-	        //System.setProperty("java.rmi.server.hostname", "127.0.0.1");
-	        //Naming.rebind("rmi://127.0.0.1/Tabela1", new Table()); 
+		try {
 	        Naming.rebind("Room", new Room());  
 	    }  
 	    catch( Exception e ) {  
