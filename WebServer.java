@@ -10,13 +10,12 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.util.Map;
 import java.util.Scanner;
 
 public class WebServer {
 
     static RoomInterface room;
-    
+
     public WebServer() {
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
@@ -34,12 +33,12 @@ public class WebServer {
             System.out.println("Exception: " + e.toString());
         }
     }
-    
+
     static class isAvailable implements HttpHandler {
 
         int input_row, input_column;
         Scanner in;
-        
+
         @Override
         public void handle(HttpExchange t) throws IOException {
             String query = t.getRequestURI().getQuery();
@@ -55,7 +54,7 @@ public class WebServer {
                 System.out.println("Bruh");
             }
 
-            String response = available ? "A cadeira está disponível" : "A cadeira NÃO está disponível";
+            String response = available ? "A cadeira esta disponivel" : "A cadeira NAO esta disponivel";
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
