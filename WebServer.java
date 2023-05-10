@@ -65,6 +65,8 @@ public class WebServer {
     public void execute() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
         server.createContext("/isAvailable", new isAvailable());
+        server.createContext("/isAvailable", new isAvailable());
+        server.createContext("/isAvailable", new isAvailable());
         server.setExecutor(null); // creates a default executor
         server.start();
     }
@@ -72,6 +74,64 @@ public class WebServer {
     public static void main(String[] args) throws Exception {
         WebServer webServer = new WebServer();
         webServer.execute();
+    }
+
+
+    static class reserve implements HttpHandler {
+
+        int input_row, input_column;
+        Scanner in;
+
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            String query = t.getRequestURI().getQuery();
+            in = new Scanner(query);
+            in.useDelimiter(",");
+            input_row = in.nextInt();
+            input_column = in.nextInt();
+
+            try {
+                room.reserve(input_row, input_column);
+				System.out.println("Cadeira " + input_row + "-" + input_column + " reservada");
+            } catch (Exception e) {
+                System.out.println("nao reservou");
+            }
+
+            String response = "Cadeira " + input_row + "-" + input_column + " reservada";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+
+    static class free implements HttpHandler {
+
+        int input_row, input_column;
+        Scanner in;
+
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            String query = t.getRequestURI().getQuery();
+            in = new Scanner(query);
+            in.useDelimiter(",");
+            input_row = in.nextInt();
+            input_column = in.nextInt();
+
+            try {
+                room.free(input_row, input_column);
+				System.out.println("Cadeira " + input_row + "-" + input_column + " removida");
+            } catch (Exception e) {
+                System.out.println("nao reservou");
+            }
+
+            String response = "Cadeira " + input_row + "-" + input_column + " removida";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
 
 }
