@@ -31,16 +31,22 @@ public class Client {
 	public void execute() {
 		String comando;
 		int input_row, input_column;
+		String response;
 
 		try {
 			System.out.println("Entre com um dos comandos a seguir:\n \t\treserve <linha> <coluna>\n\t\tfree <linha> <coluna>\n\t\tisAvailable <linha> <coluna>\n\t\tdisplay");
 			while (true) {
 				comando = in.next();
 				if (comando.equalsIgnoreCase("reserve")) {
-					input_row = in.nextInt();
-					input_column = in.nextInt();
-					room.reserve(input_row, input_column);
-					System.out.println("Cadeira " + input_row + "-" + input_column + " reservada");
+						input_row = in.nextInt();
+						input_column = in.nextInt();
+						if(room.isAvailable(input_row, input_column)) {
+							room.reserve(input_row, input_column);
+							response = "Cadeira " + input_row + "-" + input_column + " reservada";
+						} else {
+							response = "Cadeira ja reservada ";
+						}
+					System.out.println(response);
 				} else if (comando.equalsIgnoreCase("free")) {
 					input_row = in.nextInt();
 					input_column = in.nextInt();
