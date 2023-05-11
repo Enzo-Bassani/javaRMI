@@ -5,7 +5,7 @@ public class Room extends UnicastRemoteObject implements RoomInterface {
 	private Chair[][] chairs;
 	private static int ROWS = 20;
 	private static int COLUMNS = 20;
-	private static String invalidArgMsg = "Cadeira %d-%d não existe. Formato da sala: " + ROWS + "x" + COLUMNS;
+	private static String invalidArgMsg = "Cadeira %d-%d nao existe. Formato da sala: " + ROWS + "x" + COLUMNS;
 
 	public Room() throws RemoteException {
 		chairs = new Chair[ROWS][COLUMNS];
